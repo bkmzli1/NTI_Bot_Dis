@@ -1,0 +1,10 @@
+# Settings
+TOKEN = 'NDgxNzY3NDkwNzE2ODI3NjQ4.Xv3gIQ.HRujJQF2YudXKRLqsmPHYa8j3tA'
+BOT_ID = 481767490716827648
+
+# ID chanel
+chanel_voice_acting = 728271249695834233
+
+chanel_audio = {
+    474475880354283544
+}
