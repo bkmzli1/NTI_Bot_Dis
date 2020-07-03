@@ -21,16 +21,16 @@ class MyClient(discord.Client):
     async def on_voice_state_update(self, member, before, after):
         ch = self.get_channel(config.chanel_voice_acting)  # получение текстового канала
 
-        if str(after.channel) != 'None':  # если пользоатель вышел то получем None
-            for id_channel in config.chanel_audio:  # получаем каналы прослушки аудио каналов
-                if after.channel.id == id_channel:  # сравнение id каналов
-                    await ch.send(
-                        content=str('Потльзователь {0} вошол в комнату {1.channel.name}').format(member, after),
-                        tts=True)
+        if str(after.channel) != 'None':
+            if after.channel.id in config.chanel_audio:
+                await ch.send(
+                    content=str('Потльзователь {0} вошол в комнату {1.channel.name}').format(member, after),
+                    tts=True)
         else:
-            await ch.send(
-                content=str('Потльзователь {0} вышел в комнату {1.channel.name}').format(member, before),
-                tts=True)
+            if after.channel.id in config.chanel_audio:
+                await ch.send(
+                    content=str('Потльзователь {0} вышел в комнату {1.channel.name}').format(member, before),
+                    tts=True)
 
 
 myClient = MyClient()
