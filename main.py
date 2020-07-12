@@ -4,10 +4,10 @@ from discord import utils
 from discord.ext import commands
 import config
 
-bot = commands.Bot(command_prefix='!')
+from threading import Thread
 
 
-class MyClient(discord.Client):
+class BotClient(discord.Client):
     # старт бота
     async def on_ready(self):
         print('logged on as {0.user}!'.format(self))
@@ -15,7 +15,10 @@ class MyClient(discord.Client):
     # обработка сообщений
     async def on_message(self, message):
         if message.author.id != config.BOT_ID:  # что бы бот не читал свои сообщения
-            print('Massage from {0.author}: {0.content} {0.id}'.format(message))
+            if message.content == '!exit':
+                if message.channel.id == config.chanel_voice_acting:
+                    await myClient.close()
+    # print('Massage from {0.author}: {0.content}: id = {0.id}'.format(message))
 
     # обработка подключения в канал
     async def on_voice_state_update(self, member, before, after):
@@ -24,14 +27,10 @@ class MyClient(discord.Client):
         if str(after.channel) != 'None':
             if after.channel.id in config.chanel_audio:
                 await ch.send(
-                    content=str('Потльзователь {0} вошол в комнату {1.channel.name}').format(member, after),
-                    tts=True)
-        else:
-            if after.channel.id in config.chanel_audio:
-                await ch.send(
-                    content=str('Потльзователь {0} вышел в комнату {1.channel.name}').format(member, before),
+                    content=str('Потльзователь @{0} вошол в комнату {1.channel.name}').format(member, after),
                     tts=True)
 
 
-myClient = MyClient()
+myClient = BotClient()
 myClient.run(config.TOKEN)
+
